@@ -1,22 +1,39 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Brain, FileCode2, BookCopy, Microscope, FlaskRound as Flask, Database, Award, Users } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Brain, FileCode2, BookCopy, Microscope, FlaskConical, Database, Award, Users } from 'lucide-react';
 import { HeroCard } from './components/HeroCard';
 import { FeatureCard } from './components/FeatureCard';
 import { Interface3D } from './components/Interface3D';
 
 function App() {
+  const researchTopics = [
+    "Neural Networks in Medical Imaging",
+    "Deep Learning for Disease Detection",
+    "Computer Vision in Pathology",
+    "AI-Driven Diagnostic Tools"
+  ];
+
+  const [currentTopic, setCurrentTopic] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTopic((prev) => (prev + 1) % researchTopics.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-blue-50">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16 relative">
-        {/* Background Elements */}
+        {/* Enhanced Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"
             animate={{
               scale: [1, 1.2, 1],
               rotate: [0, 45, 0],
+              y: [0, 20, 0],
             }}
             transition={{
               duration: 10,
@@ -29,6 +46,7 @@ function App() {
             animate={{
               scale: [1.2, 1, 1.2],
               rotate: [45, 0, 45],
+              x: [0, 20, 0],
             }}
             transition={{
               duration: 10,
@@ -36,11 +54,26 @@ function App() {
               ease: "easeInOut"
             }}
           />
+          <motion.div
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full"
+            style={{
+              background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0) 70%)",
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center relative">
-          {/* Left Column - Text Content */}
-          <div className="space-y-6">
+          {/* Left Column - Enhanced Text Content */}
+          <div className="space-y-6 relative">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -52,6 +85,7 @@ function App() {
                 animate={{
                   scale: [1, 1.2, 1],
                   rotate: [0, 90, 0],
+                  z: [0, 50, 0],
                 }}
                 transition={{
                   duration: 5,
@@ -64,8 +98,26 @@ function App() {
               </h1>
             </motion.div>
             
+            {/* Animated Research Topics */}
+            <div className="relative h-20 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentTopic}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                >
+                  <div className="text-xl text-blue-600 font-semibold pl-6 border-l-4 border-blue-500">
+                    {researchTopics[currentTopic]}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
             <motion.p 
-              className="text-xl text-gray-600 relative pl-6 border-l-4 border-blue-500"
+              className="text-xl text-gray-600 relative pl-6 border-l-4 border-blue-500 backdrop-blur-sm bg-white/30 p-4 rounded-r-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -80,9 +132,12 @@ function App() {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <motion.button 
-                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold relative overflow-hidden group"
-                whileHover={{ scale: 1.05 }}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold relative overflow-hidden group backdrop-blur-sm"
+                whileHover={{ scale: 1.05, rotateX: 5, rotateY: 5 }}
                 whileTap={{ scale: 0.95 }}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/50 to-blue-400/0"
@@ -99,14 +154,17 @@ function App() {
               </motion.button>
               
               <motion.button 
-                className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold relative overflow-hidden group"
-                whileHover={{ scale: 1.05 }}
+                className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold relative overflow-hidden group backdrop-blur-sm bg-white/30"
+                whileHover={{ scale: 1.05, rotateX: 5, rotateY: -5 }}
                 whileTap={{ scale: 0.95 }}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
               >
                 <motion.div
                   className="absolute inset-0 bg-blue-50"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 1, opacity: 1 }}
+                  initial={false}
+                  whileHover={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 />
                 <span className="relative">Learn More</span>
@@ -120,15 +178,23 @@ function App() {
           </div>
         </div>
 
-        {/* Stats Section */}
+        {/* Enhanced Stats Section */}
         <motion.div 
-          className="mt-24 bg-white/80 backdrop-blur-lg p-8 rounded-2xl border border-blue-100 relative overflow-hidden"
+          className="mt-24 bg-white/40 backdrop-blur-xl p-8 rounded-2xl border border-blue-100 relative overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
+          whileHover={{
+            scale: 1.02,
+            rotateX: 2,
+            rotateY: 2,
+          }}
+          style={{
+            transformStyle: "preserve-3d",
+          }}
         >
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/5 to-blue-400/0"
+            className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-blue-400/10 to-blue-400/0"
             animate={{
               x: ['-100%', '100%'],
             }}
@@ -140,22 +206,49 @@ function App() {
           />
           <div className="grid grid-cols-3 gap-8 text-center relative">
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                rotateX: 5,
+                rotateY: 5,
+                z: 20,
+              }}
               transition={{ type: "spring", stiffness: 300 }}
+              style={{
+                transformStyle: "preserve-3d",
+              }}
+              className="p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-blue-100/50"
             >
               <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
               <div className="text-gray-600">Research Papers Published</div>
             </motion.div>
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                rotateX: 5,
+                rotateY: 5,
+                z: 20,
+              }}
               transition={{ type: "spring", stiffness: 300 }}
+              style={{
+                transformStyle: "preserve-3d",
+              }}
+              className="p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-blue-100/50"
             >
               <div className="text-4xl font-bold text-blue-600 mb-2">98%</div>
               <div className="text-gray-600">Success Rate</div>
             </motion.div>
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                rotateX: 5,
+                rotateY: 5,
+                z: 20,
+              }}
               transition={{ type: "spring", stiffness: 300 }}
+              style={{
+                transformStyle: "preserve-3d",
+              }}
+              className="p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-blue-100/50"
             >
               <div className="text-4xl font-bold text-blue-600 mb-2">50K+</div>
               <div className="text-gray-600">Datasets Processed</div>
